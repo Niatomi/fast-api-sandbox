@@ -2,8 +2,7 @@ from models import Gender, Role, User
 from models.dto import UserDto
 from models.errors import BadRequestException
 
-from uuid import UUID, uuid4 as uuid 
-from loguru import logger as log
+from uuid import UUID
 
 _users = [
     User(
@@ -32,12 +31,29 @@ _users = [
     ),
     
 ]
+        
+def from_dto(dto: UserDto):
+    usr = User()
+    usr = usr.dict()
+    dto = dto.dict()
+    for param in dto:
+        usr[param] = dto[param]
+    
+    usr = User.parse_obj(usr)
+    return usr
 
 def get_all_users():
     return _users
 
+def get_user_by_id(id: str):
+    id = UUID(id)
+    for u in _users:
+        if u.id == id:
+            return u
+    raise BadRequestException()
+
 def add_new_user(user: User):
-    _users.append(user)
+    _users.append(from_dto(user))
     
 def delete_user_by_uuid(id: UUID):
     id = UUID(id)
@@ -58,11 +74,7 @@ def update_user_by_uuid(id: str, new_info: UserDto):
     id = UUID(id)
     for u in _users:
         if u.id == id:
-            for param in new_info:
-                if param == None:
-                    new_info[param] == u[param]
-            _users.remove(u)
-            _users.append(new_info)
+            _users.append(from_dto(new_info))
             return True
     raise BadRequestException()
             
