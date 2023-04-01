@@ -1,5 +1,5 @@
 from schemas import Post
-
+from uuid import uuid4
 from exceptions import PostNotFoundException
 
 
@@ -9,8 +9,10 @@ class Database():
         self.db = []
         
     def create_post(self, post: Post):
-        self.db.append(post.dict())
-        return post
+        input_data = post.dict()
+        input_data['id'] = uuid4()
+        self.db.append(input_data)
+        return input_data
     
     def get_all(self):
         return self.db
@@ -23,6 +25,8 @@ class Database():
     
     def update_by_id(self, id: int, post: Post):
         self.delete_by_id(id)
+        post = post.dict()
+        post['id'] = id
         self.db.append(post)
         return True
         

@@ -22,28 +22,27 @@ def handle_post_not_found_exception(request: Request, exc: PostNotFoundException
         status_code=status.HTTP_404_NOT_FOUND
     )
 
-@app.post('/create')
+@app.post('/create', status_code=status.HTTP_201_CREATED)
 def creae_post(post: Post):
     return db.create_post(post)
 
-@app.get('/posts')
+@app.get('/posts', status_code=status.HTTP_200_OK)
 def get_posts():
     return db.get_all()
 
-@app.get('/posts/{id}')
+@app.get('/posts/{id}', status_code=status.HTTP_200_OK)
 def get_posts(id: int):
     return db.get_by_id(id)
 
-@app.patch('/posts/{id}')
+@app.patch('/posts/{id}', status_code=status.HTTP_202_ACCEPTED)
 def update_post(id: int, post: Post):
     return db.update_by_id(id, post)
 
-@app.delete('/posts/{id}')
+@app.delete('/posts/{id}', status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int):
-    return db.delete_by_id(id)
+    db.delete_by_id(id)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-def main():
-    uvicorn.run(app="main:app", host='0.0.0.0', port=8000, reload=True)
 
 if __name__ == "__main__":
-    main()
+    uvicorn.run(app="main:app", host='0.0.0.0', port=8000, reload=True)
