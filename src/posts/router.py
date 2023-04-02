@@ -58,7 +58,6 @@ async def get_posts(session: AsyncSession = Depends(get_async_session)):
             })
 async def get_posts(id: UUID, session: AsyncSession = Depends(get_async_session)):
     result = await PostsCrud.get_by_id(session=session, id=id)
-    print(result)
     return result
 
 @router.patch('/{id}', 
