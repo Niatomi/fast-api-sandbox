@@ -4,12 +4,24 @@ from fastapi import status
 from fastapi import Request
 from fastapi import Response
 
+from posts.schemas import PostNotFound
+from users.schemas import UserNotFound
+
 class PostNotFoundException(Exception):
     pass
 
+class UserNotFoundException(Exception):
+    pass
 
-def perfect_exception_handler(request: Request, exc: HTTPException):
-    return Response(status_code=status.HTTP_404_NOT_FOUND, content="Post not found ")
+
+def post_not_found_exception_handler(request: Request, exc: HTTPException):
+    content = PostNotFound
+    return Response(status_code=status.HTTP_404_NOT_FOUND, content=content)
+
+def user_not_found_exception_handler(request: Request, exc: HTTPException):
+    content = UserNotFound
+    return Response(status_code=status.HTTP_404_NOT_FOUND, content=content)
+
 
 def include_app(app):
-	app.add_exception_handler(PostNotFoundException, perfect_exception_handler)
+	app.add_exception_handler(PostNotFoundException, post_not_found_exception_handler)
