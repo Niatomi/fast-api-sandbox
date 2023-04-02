@@ -7,10 +7,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from exceptions import PostNotFoundException
 
 from posts.router import router as posts_router
+from users.router import router as users_router
 
 app = FastAPI()
 
 app.include_router(router=posts_router)
+app.include_router(router=users_router)
 
 
 app.add_middleware(
