@@ -1,11 +1,11 @@
 from pydantic import BaseModel
 
 class PostCreated(BaseModel):
-    message: str = "Post is created"
+    message: str = "POST_IS_CREATED"
     
 class PostUpdated(BaseModel):
-    message: str = "Post is updadated"
+    message: str = "POST_IS_UPDATED"
     
 class PostNotFound(BaseModel):
-    message: str = "Post is not found"
+    message: str = "POST_IS_NOT_FOUND"
     
