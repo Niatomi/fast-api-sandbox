@@ -9,6 +9,9 @@ from exceptions import PostNotFoundException
 from posts.router import router as posts_router
 from users.router import router as users_router
 
+from database import engine
+from database import Base
+
 app = FastAPI()
 
 app.include_router(router=posts_router)
