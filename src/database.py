@@ -15,7 +15,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}?async_fallback=true"
 Base = declarative_base()
 
-engine = create_async_engine(DATABASE_URL, echo=config.getboolean('SQLAlchemy', 'ddl_show'))
+engine = create_async_engine(DATABASE_URL, echo=config.getboolean('SQLAlchemy', 'ddl_show'), pool_size=5000, max_overflow=4000)
 
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
