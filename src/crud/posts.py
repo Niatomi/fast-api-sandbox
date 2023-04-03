@@ -16,7 +16,10 @@ class PostsCrud():
     
     @staticmethod
     async def create(session: AsyncSession, post: SchemasPost):
-        new_data = Post(**post.dict())
+        input_data = post.dict()
+        if input_data.get('id') is not None:
+            input_data.pop('id')
+        new_data = Post(**input_data)
         session.add(new_data)
         await session.commit()
     
@@ -46,12 +49,12 @@ class PostsCrud():
                  values(new_post)
                 )
         await session.execute(statement)
+        await session.commit()
         return "Data updated"
     
     @staticmethod
     async def delete_by_id(session: AsyncSession, id: UUID):
         result = await PostsCrud.get_by_id(session=session, id=id)
-        
         statement = delete(Post).where(Post.id == id)
         result = await session.execute(statement)
         await session.commit()
