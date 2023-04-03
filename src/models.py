@@ -11,6 +11,10 @@ from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4 as uuid
 from datetime import datetime
 
+from sqlalchemy.orm import DeclarativeBase
+
+class Base(DeclarativeBase):
+    pass
 
 class User(Base):
     __tablename__ = "user_table"
