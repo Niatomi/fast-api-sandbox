@@ -30,8 +30,8 @@ router = APIRouter(
                  }
              })
 async def create_post(post: Post, session: AsyncSession = Depends(get_async_session)):
-    PostsCrud.create(session=session, post=post)
-    return PostCreated
+    await PostsCrud.create(session=session, post=post)
+    return PostCreated()
 
 @router.get('/', 
             status_code=status.HTTP_200_OK,
@@ -74,7 +74,7 @@ async def get_posts(id: UUID, session: AsyncSession = Depends(get_async_session)
              })
 async def update_post(id: UUID, post: Post, session: AsyncSession = Depends(get_async_session)):
     result = await PostsCrud.update_by_id(session=session, id=id, new_post=post)
-    return PostUpdated
+    return PostUpdated()
 
 @router.delete('/{id}', 
                status_code=status.HTTP_204_NO_CONTENT,
