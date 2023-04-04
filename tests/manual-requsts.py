@@ -17,21 +17,18 @@ def process_func():
         
     for t in threads:
         t.start()
-        sleep(randint(1, 5))
+        sleep(1)
     for t in threads:
         t.join()
         
 def thread_func():
     while True:
         p = {
-            "title": "string",
-            "content": "string",
-            "is_published": True
+            "email": "user@example.com",
+            "password": "string"
         }
         
-        status = requests.post(url='http://0.0.0.0:8000/posts/create', json=p)
-        
-        print(status)
+        requests.post(url='http://0.0.0.0:8000/login', json=p)
         
         # status = requests.get(url='http://0.0.0.0:8000/posts/')
         # print(status)
@@ -49,3 +46,5 @@ if __name__ == '__main__':
         
     for p in processes:
         p.join()
+    
+    # thread_func()
