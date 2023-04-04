@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from schemas import Post as SchemasPost
+from posts import schemas
 
 from sqlalchemy import select
 from sqlalchemy import update
@@ -15,7 +15,7 @@ from uuid import UUID
 class PostsCrud():
     
     @staticmethod
-    async def create(session: AsyncSession, post: SchemasPost):
+    async def create(session: AsyncSession, post: schemas.PostBase):
         input_data = post.dict()
         if input_data.get('id') is not None:
             input_data.pop('id')
@@ -40,7 +40,7 @@ class PostsCrud():
         return post
         
     @staticmethod
-    async def update_by_id(session: AsyncSession, id: UUID, new_post: SchemasPost):
+    async def update_by_id(session: AsyncSession, id: UUID, new_post: schemas.PostBase):
         result = await PostsCrud.get_by_id(session=session, id=id)
         new_post = new_post.dict()
         new_post['id'] = id
@@ -50,7 +50,7 @@ class PostsCrud():
                 )
         await session.execute(statement)
         await session.commit()
-        return "Data updated"
+        return schemas.PostUpdated()
     
     @staticmethod
     async def delete_by_id(session: AsyncSession, id: UUID):
@@ -58,4 +58,4 @@ class PostsCrud():
         statement = delete(Post).where(Post.id == id)
         result = await session.execute(statement)
         await session.commit()
-        return "Data deleted"
+        return schemas.PostDeleted()
