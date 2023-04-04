@@ -36,7 +36,7 @@ def user_already_exists_exception_handler(request: Request, exc: UserAlreadyExis
 
 def wrong_credentials_handler(request: Request, exc: WrongCredentialsException):
     content = WrongCredentials().dict()
-    return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=content)
+    return JSONResponse(status_code=status.HTTP_403_FORBIDDEN, content=content, headers={"WWW-Authenticate": "Bearer"})
 
 def include_app(app: FastAPI):
 	app.add_exception_handler(PostNotFoundException, post_not_found_exception_handler)
