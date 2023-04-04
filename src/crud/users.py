@@ -24,9 +24,10 @@ class UserCrud():
     async def get_by_email(session: AsyncSession, email: EmailStr) -> User:
         query = select(User).where(User.email == email)
         result = await session.execute(query)
-        if result is None:
+        user = result.scalars().first()
+        if user is None:
             raise UserNotFoundException
-        return result.scalars().first()
+        return user
     
     @staticmethod
     async def create(session: AsyncSession, user: schemas.UserCreate):
