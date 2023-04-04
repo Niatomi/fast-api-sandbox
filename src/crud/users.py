@@ -1,7 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from sqlalchemy import select
-from sqlalchemy import insert
 from sqlalchemy import delete
 from sqlalchemy import update
 
@@ -22,9 +21,11 @@ from uuid import UUID
 class UserCrud():
     
     @staticmethod
-    async def get_by_email(session: AsyncSession, email: EmailStr):
+    async def get_by_email(session: AsyncSession, email: EmailStr) -> User:
         query = select(User).where(User.email == email)
         result = await session.execute(query)
+        if result is None:
+            raise UserNotFoundException
         return result.scalars().first()
     
     @staticmethod
