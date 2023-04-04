@@ -1,8 +1,8 @@
-"""Add models
+"""Initial commit
 
-Revision ID: 2ef9a24963c6
-Revises: b20450c2a05c
-Create Date: 2023-04-03 02:24:02.213159
+Revision ID: ee2cc4a1a4c2
+Revises: 
+Create Date: 2023-04-04 12:27:51.052947
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '2ef9a24963c6'
-down_revision = 'b20450c2a05c'
+revision = 'ee2cc4a1a4c2'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -29,10 +29,12 @@ def upgrade() -> None:
     op.create_table('user_table',
     sa.Column('id', sa.UUID(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
-    sa.Column('login', sa.String(), nullable=False),
-    sa.Column('is_email_confirmed', sa.String(), nullable=False),
+    sa.Column('email', sa.String(), nullable=False),
+    sa.Column('password', sa.String(), nullable=False),
+    sa.Column('is_email_confirmed', sa.Boolean(), nullable=False),
+    sa.Column('created_at', sa.TIMESTAMP(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('login')
+    sa.UniqueConstraint('email')
     )
     # ### end Alembic commands ###
 
