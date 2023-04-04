@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 
 from posts import schemas as posts_schemas
 from users import schemas as user_schemas
+from auth.schemas import WrongCredentials
 
 
 class PostNotFoundException(Exception):
@@ -18,6 +19,8 @@ class UserNotFoundException(Exception):
 class UserAlreadyExistsException(Exception):
     pass
 
+class WrongCredentialsException(Exception):
+    pass
 
 def post_not_found_exception_handler(request: Request, exc: PostNotFoundException):
     content = posts_schemas.PostNotFound().dict()
@@ -31,7 +34,12 @@ def user_already_exists_exception_handler(request: Request, exc: UserAlreadyExis
     content = user_schemas.UserAlreadyExists().dict()
     return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=content)
 
+def wrong_credentials_handler(request: Request, exc: WrongCredentialsException):
+    content = WrongCredentials().dict()
+    return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST, content=content)
+
 def include_app(app: FastAPI):
 	app.add_exception_handler(PostNotFoundException, post_not_found_exception_handler)
 	app.add_exception_handler(UserAlreadyExistsException, user_already_exists_exception_handler)
 	app.add_exception_handler(UserNotFoundException, user_not_found_exception_handler)
+	app.add_exception_handler(WrongCredentialsException, wrong_credentials_handler)
