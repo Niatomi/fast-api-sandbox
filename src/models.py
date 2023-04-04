@@ -18,10 +18,13 @@ class Base(DeclarativeBase):
 
 class User(Base):
     __tablename__ = "user_table"
+    
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid)
     name = Column(String, nullable=False)
-    login = Column(String, unique=True, nullable=False)
-    is_email_confirmed = Column(String, nullable=False)
+    email = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=False)
+    is_email_confirmed = Column(Boolean, default=False, nullable=False)
+    created_at = Column(TIMESTAMP, default=datetime.utcnow)
     
 
 class Post(Base):
