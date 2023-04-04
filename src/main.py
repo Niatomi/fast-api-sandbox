@@ -4,13 +4,8 @@ from fastapi import FastAPI
 import exceptions    
 from fastapi.middleware.cors import CORSMiddleware
 
-from exceptions import PostNotFoundException
-
 from posts.router import router as posts_router
 from users.router import router as users_router
-
-from database import engine
-from database import Base
 
 app = FastAPI()
 
@@ -26,7 +21,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-exceptions.include_app(app)
+exceptions.include_app(app) 
 
 # @app.on_event('startup')
 # async def start():
