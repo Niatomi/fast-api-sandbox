@@ -10,3 +10,7 @@ class WrongCredentials(BaseModel):
     
 class UserToken(BaseModel):
     token: str = "ACTUAL_TOKEN"
+    token_type: str = "bearer"
+    
+class TokenData(BaseModel):
+    id: str
