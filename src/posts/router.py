@@ -7,7 +7,7 @@ from typing import List
 
 from crud.posts import PostsCrud
 
-from schemas import Post
+from posts import schemas
 from posts.schemas import *
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -29,7 +29,7 @@ router = APIRouter(
                      "description": "User post is created"
                  }
              })
-async def create_post(post: Post, session: AsyncSession = Depends(get_async_session)):
+async def create_post(post: schemas.PostBase, session: AsyncSession = Depends(get_async_session)):
     await PostsCrud.create(session=session, post=post)
     return PostCreated()
 
@@ -37,10 +37,11 @@ async def create_post(post: Post, session: AsyncSession = Depends(get_async_sess
             status_code=status.HTTP_200_OK,
             responses={
                 status.HTTP_200_OK: {
-                    "model": List[Post],
+                    "model": List[schemas.PostAll],
                     "description": "List of posts given to user"
                 }
-            })
+            },
+            response_model=List[schemas.PostAll])
 async def get_posts(session: AsyncSession = Depends(get_async_session)):
     result = await PostsCrud.get_all(session=session)
     return result
@@ -49,14 +50,15 @@ async def get_posts(session: AsyncSession = Depends(get_async_session)):
             status_code=status.HTTP_200_OK,
             responses={
                 status.HTTP_200_OK: {
-                    "model": Post,
+                    "model": schemas.PostAll,
                     "description": "User post is given to user"
                 },
                 status.HTTP_404_NOT_FOUND: {
                     "description": "User post is not found"
                 }
-            })
-async def get_posts(id: UUID, session: AsyncSession = Depends(get_async_session)):
+            },
+            response_model=schemas.PostAll)
+async def get_post(id: UUID, session: AsyncSession = Depends(get_async_session)):
     result = await PostsCrud.get_by_id(session=session, id=id)
     return result
 
@@ -72,9 +74,9 @@ async def get_posts(id: UUID, session: AsyncSession = Depends(get_async_session)
                     "description": "User post is not found"
                 }
              })
-async def update_post(id: UUID, post: Post, session: AsyncSession = Depends(get_async_session)):
+async def update_post(id: UUID, post: schemas.PostBase, session: AsyncSession = Depends(get_async_session)):
     result = await PostsCrud.update_by_id(session=session, id=id, new_post=post)
-    return PostUpdated()
+    return result
 
 @router.delete('/{id}', 
                status_code=status.HTTP_204_NO_CONTENT,
