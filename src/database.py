@@ -8,6 +8,7 @@ from typing import AsyncGenerator
 import configparser
 
 config = configparser.ConfigParser()
+# config.read("config.ini")
 config.read("../config.ini")
 
 from sqlalchemy.ext.asyncio import AsyncSession
