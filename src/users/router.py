@@ -4,21 +4,20 @@ from fastapi import status
 from fastapi import Response
 
 from typing import List
+from uuid import UUID
 
-from users import schemas
 from database import get_async_session
 
+from users import schemas
+from crud.users import UserCrud
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from crud.users import UserCrud
-
-from uuid import UUID
+from utils import hash
 
 router = APIRouter(
     prefix="/user",
     tags=['user']
 )
-
 
 @router.post("/create",
              status_code=status.HTTP_201_CREATED,
@@ -34,6 +33,7 @@ router = APIRouter(
              },
              response_model=schemas.UserCreated)
 async def create_user(new_user: schemas.UserCreate, session: AsyncSession = Depends(get_async_session)):
+    new_user.password = hash(new_user.password)
     await UserCrud.create(session=session, user=new_user)
     return schemas.UserCreated()
 

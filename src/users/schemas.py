@@ -9,19 +9,18 @@ from datetime import datetime
 class UserBase(BaseModel):
     name: str
     email: EmailStr
-    password: str
     
     class Config:
         orm_mode = True
 
-    
 class UserCreate(UserBase):
-    pass
+    password: str
 
 class UserGet(UserBase):
     id: UUID
     is_email_confirmed: bool
-    
+    created_at: datetime
+        
     class Config:
         orm_mode = True
 
