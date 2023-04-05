@@ -13,14 +13,12 @@ class PostBase(BaseModel):
 
 class PostAll(PostBase):        
     id: UUID
-    created_at: datetime
+    created_at: datetime = datetime.now()
+    owner_id: UUID
     
     class Config:
         orm_mode = True
-
-class PostUpdate(PostBase):
-    pass
-
+        
 class PostCreated(BaseModel):
     message: str = "POST_IS_CREATED"
     
@@ -32,4 +30,7 @@ class PostUpdated(BaseModel):
     
 class PostNotFound(BaseModel):
     message: str = "POST_IS_NOT_FOUND"
+    
+class PostChangeNotAllowed(BaseModel):
+    message: str = "CURRENT_POST_IS_NOT_OF_THIS_USER"
     
