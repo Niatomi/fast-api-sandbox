@@ -1,6 +1,7 @@
 import uvicorn
 
 from fastapi import FastAPI
+from fastapi import Depends
 import exceptions    
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -8,13 +9,13 @@ from posts.router import router as posts_router
 from users.router import router as users_router
 from auth.router import router as auth_router
 
-
+from auth.oauth2 import get_current_user
 
 app = FastAPI()
 
-app.include_router(router=posts_router)
-app.include_router(router=users_router)
 app.include_router(router=auth_router)
+app.include_router(router=posts_router, dependencies=[Depends(get_current_user)])
+app.include_router(router=users_router)
 
 
 app.add_middleware(
