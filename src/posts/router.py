@@ -17,13 +17,23 @@ from database import get_async_session
 
 from auth.oauth2 import get_current_user
 
+from posts.utils import check_user_own
+
 from models import User
+
+from uuid import uuid4
+
+from exceptions import NotAllowedException
 
 router = APIRouter(
     prefix="/posts",
-    tags=['posts']
+    tags=['posts'],
+    responses={
+        status.HTTP_401_UNAUTHORIZED: {
+            "description": "User is not logged in"
+        }
+    }
 )
-
 
 @router.post('/create', 
              status_code=status.HTTP_201_CREATED,
@@ -34,8 +44,12 @@ router = APIRouter(
                  }
              })
 async def create_post(post: schemas.PostBase, 
-                      session: AsyncSession = Depends(get_async_session)):
-    await PostsCrud.create(session=session, post=post)
+                      session: AsyncSession = Depends(get_async_session),
+                      user: User = Depends(get_current_user)):
+    new_post = PostAll(**post.dict(), id=uuid4(), owner_id=user.id)
+    new_post.created_at = datetime.now()
+    
+    await PostsCrud.create(session=session, post=new_post)
     return PostCreated()
 
 @router.get('/', 
@@ -46,8 +60,7 @@ async def create_post(post: schemas.PostBase,
                     "description": "List of posts given to user"
                 }
             })
-async def get_posts(session: AsyncSession = Depends(get_async_session),
-                    user: User = Depends(get_current_user)):
+async def get_posts(session: AsyncSession = Depends(get_async_session)):
     result = await PostsCrud.get_all(session=session)
     return result
 
@@ -77,9 +90,15 @@ async def get_post(id: UUID, session: AsyncSession = Depends(get_async_session))
                 status.HTTP_404_NOT_FOUND: {
                     "model": PostNotFound,
                     "description": "User post is not found"
+                },
+                status.HTTP_405_METHOD_NOT_ALLOWED: {
+                    "model": PostChangeNotAllowed,
+                    "description": "User doesn't have an access for current post"
                 }
-             })
-async def update_post(id: UUID, post: schemas.PostBase, session: AsyncSession = Depends(get_async_session)):
+              },
+              dependencies=[Depends(check_user_own)])
+async def update_post(id: UUID, post: schemas.PostBase, 
+                      session: AsyncSession = Depends(get_async_session)):
     result = await PostsCrud.update_by_id(session=session, id=id, new_post=post)
     return result
 
@@ -92,8 +111,15 @@ async def update_post(id: UUID, post: schemas.PostBase, session: AsyncSession = 
                    status.HTTP_404_NOT_FOUND: {
                        "model": PostNotFound,
                        "description": "User post is not found"
+                    },
+                    status.HTTP_405_METHOD_NOT_ALLOWED: {
+                       "model": PostChangeNotAllowed,
+                       "description": "User doesn't have an access for current post"
                     }
-               })
-async def delete_post(id: UUID, session: AsyncSession = Depends(get_async_session)):
+               },
+               dependencies=[Depends(check_user_own)])
+async def delete_post(id: UUID, 
+                      session: AsyncSession = Depends(get_async_session),
+                      user: User = Depends(get_current_user)):
     result = await PostsCrud.delete_by_id(session=session, id=id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
