@@ -15,6 +15,10 @@ from uuid import UUID
 
 from database import get_async_session
 
+from auth.oauth2 import get_current_user
+
+from models import User
+
 router = APIRouter(
     prefix="/posts",
     tags=['posts']
@@ -29,7 +33,8 @@ router = APIRouter(
                      "description": "User post is created"
                  }
              })
-async def create_post(post: schemas.PostBase, session: AsyncSession = Depends(get_async_session)):
+async def create_post(post: schemas.PostBase, 
+                      session: AsyncSession = Depends(get_async_session)):
     await PostsCrud.create(session=session, post=post)
     return PostCreated()
 
@@ -40,9 +45,9 @@ async def create_post(post: schemas.PostBase, session: AsyncSession = Depends(ge
                     "model": List[schemas.PostAll],
                     "description": "List of posts given to user"
                 }
-            },
-            response_model=List[schemas.PostAll])
-async def get_posts(session: AsyncSession = Depends(get_async_session)):
+            })
+async def get_posts(session: AsyncSession = Depends(get_async_session),
+                    user: User = Depends(get_current_user)):
     result = await PostsCrud.get_all(session=session)
     return result
 
