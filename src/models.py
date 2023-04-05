@@ -3,7 +3,8 @@ from database import Base
 from sqlalchemy import (
     Column,
     String,
-    Boolean
+    Boolean,
+    ForeignKey
 )
 from sqlalchemy.types import TIMESTAMP
 from sqlalchemy.dialects.postgresql import UUID
@@ -25,7 +26,6 @@ class User(Base):
     password = Column(String, nullable=False)
     is_email_confirmed = Column(Boolean, default=False, nullable=False)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
-    
 
 class Post(Base):
     __tablename__ = "posts_table"
@@ -35,3 +35,5 @@ class Post(Base):
     content = Column(String, nullable=False)
     is_published = Column(Boolean, default=False)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
+    
+    owner_id = Column(UUID(as_uuid=True), ForeignKey("user_table.id", ondelete="CASCADE"), nullable=False)
