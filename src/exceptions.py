@@ -22,6 +22,9 @@ class UserAlreadyExistsException(Exception):
 class WrongCredentialsException(Exception):
     pass
 
+class NotAllowedException(Exception):
+    pass
+
 def post_not_found_exception_handler(request: Request, exc: PostNotFoundException):
     content = posts_schemas.PostNotFound().dict()
     return JSONResponse(status_code=status.HTTP_404_NOT_FOUND, content=content)
@@ -38,8 +41,13 @@ def wrong_credentials_handler(request: Request, exc: WrongCredentialsException):
     content = WrongCredentials().dict()
     return JSONResponse(status_code=status.HTTP_403_FORBIDDEN, content=content, headers={"WWW-Authenticate": "Bearer"})
 
+def not_allowed_handler(request: Request, exc: NotAllowedException):
+    content = posts_schemas.PostChangeNotAllowed().dict()
+    return JSONResponse(status_code=status.HTTP_405_METHOD_NOT_ALLOWED, content=content)
+
 def include_app(app: FastAPI):
 	app.add_exception_handler(PostNotFoundException, post_not_found_exception_handler)
 	app.add_exception_handler(UserAlreadyExistsException, user_already_exists_exception_handler)
 	app.add_exception_handler(UserNotFoundException, user_not_found_exception_handler)
 	app.add_exception_handler(WrongCredentialsException, wrong_credentials_handler)
+	app.add_exception_handler(NotAllowedException, not_allowed_handler)
