@@ -7,9 +7,14 @@ from typing import AsyncGenerator
 
 import configparser
 
+import os
+
+
 config = configparser.ConfigParser()
-# config.read("config.ini")
-config.read("../config.ini")
+if os.path.dirname(__file__).find('.') != -1:
+    config.read("config.ini")
+else:
+    config.read("../config.ini")
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
