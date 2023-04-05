@@ -9,8 +9,8 @@ class WrongCredentials(BaseModel):
     message: str = "INVALID_CREDENTIALS"
     
 class UserToken(BaseModel):
-    token: str = "ACTUAL_TOKEN"
-    token_type: str = "bearer"
+    access_token: str = "ACTUAL_TOKEN"
+    token_type: str = "Bearer"
     
 class TokenData(BaseModel):
     id: str

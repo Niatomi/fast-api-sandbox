@@ -8,6 +8,8 @@ from pydantic import EmailStr
 
 from users import schemas
 
+from utils import hash
+
 from exceptions import (
     UserNotFoundException, 
     UserAlreadyExistsException
@@ -31,12 +33,16 @@ class UserCrud():
     
     @staticmethod
     async def create(session: AsyncSession, user: schemas.UserCreate):
-        result = await UserCrud.get_by_email(session=session, email=user.email)
-        if result is not None:
-            raise UserAlreadyExistsException
-        session.add(User(**user.dict()))
-        await session.commit()
-    
+        try:
+            result = await UserCrud.get_by_email(session=session, email=user.email)
+        except UserNotFoundException:
+            hashed_user = user.dict()
+            hashed_user['password'] = hash(hashed_user['password'])
+            session.add(User(**hashed_user))
+            await session.commit()
+            return schemas.UserCreated
+        raise UserAlreadyExistsException
+        
     @staticmethod
     async def get_all(session: AsyncSession):
         statement = select(User).order_by(User.id)

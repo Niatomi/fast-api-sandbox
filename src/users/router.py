@@ -19,24 +19,6 @@ router = APIRouter(
     tags=['user']
 )
 
-@router.post("/create",
-             status_code=status.HTTP_201_CREATED,
-             responses={
-                 status.HTTP_201_CREATED: {
-                     "model": schemas.UserCreated,
-                     "description": "User created"
-                 },
-                 status.HTTP_400_BAD_REQUEST: {
-                     "model": schemas.UserAlreadyExists,
-                     "description": "User already exists"
-                 }
-             },
-             response_model=schemas.UserCreated)
-async def create_user(new_user: schemas.UserCreate, session: AsyncSession = Depends(get_async_session)):
-    new_user.password = hash(new_user.password)
-    await UserCrud.create(session=session, user=new_user)
-    return schemas.UserCreated()
-
 @router.get("/",
             status_code=status.HTTP_200_OK,
             responses={
