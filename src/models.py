@@ -40,4 +40,12 @@ class Post(Base):
     
     owner_id = Column(UUID(as_uuid=True), ForeignKey("user_table.id", ondelete="CASCADE"), nullable=False)
     
-    owner = relationship(User, )
+    owner = relationship(User)
+    
+class Votes(Base):
+    __tablename__ = "votes_table"
+    user_id = Column(UUID(as_uuid=True), ForeignKey("user_table.id", ondelete="CASCADE"), primary_key=True)
+    post_id = Column(UUID(as_uuid=True), ForeignKey("posts_table.id", ondelete="CASCADE"), primary_key=True)
+    
+    
+    
