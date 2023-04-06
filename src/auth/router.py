@@ -20,7 +20,7 @@ from users.schemas import (
 from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 
 router = APIRouter(
-    tags=["Authentication"]
+    tags=["authentication"]
 )
 
 @router.post('/sign_in',

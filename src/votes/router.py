@@ -19,6 +19,7 @@ from posts.exceptions import PostNotFoundException
 
 router = APIRouter(
     prefix='/votes',
+    tags=['votes'],
     responses={
         status.HTTP_401_UNAUTHORIZED: {
             "description": "User is not logged in"
