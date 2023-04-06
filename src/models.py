@@ -4,7 +4,7 @@ from sqlalchemy import (
     Column,
     String,
     Boolean,
-    ForeignKey
+    ForeignKey,
 )
 from sqlalchemy.types import TIMESTAMP
 from sqlalchemy.dialects.postgresql import UUID
@@ -13,6 +13,7 @@ from uuid import uuid4 as uuid
 from datetime import datetime
 
 from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import relationship
 
 class Base(DeclarativeBase):
     pass
@@ -27,6 +28,7 @@ class User(Base):
     is_email_confirmed = Column(Boolean, default=False, nullable=False)
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
 
+
 class Post(Base):
     __tablename__ = "posts_table"
     
@@ -37,3 +39,5 @@ class Post(Base):
     created_at = Column(TIMESTAMP, default=datetime.utcnow)
     
     owner_id = Column(UUID(as_uuid=True), ForeignKey("user_table.id", ondelete="CASCADE"), nullable=False)
+    
+    owner = relationship(User, )
