@@ -1,6 +1,6 @@
 from fastapi import Depends
 from fastapi import status
-from exceptions import WrongCredentialsException
+from auth.exceptions import WrongCredentialsException
 
 from fastapi.security import OAuth2PasswordBearer
 

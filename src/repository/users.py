@@ -10,7 +10,7 @@ from users import schemas
 
 from utils import hash
 
-from exceptions import (
+from users.exceptions import (
     UserNotFoundException, 
     UserAlreadyExistsException
 )

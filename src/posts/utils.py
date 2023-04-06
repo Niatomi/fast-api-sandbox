@@ -3,7 +3,7 @@ from database import get_async_session
 from repository.posts import PostsCrud
 from models import User
 from sqlalchemy.ext.asyncio import AsyncSession
-from exceptions import NotAllowedException
+from posts.exceptions import NotAllowedException
 from uuid import UUID
 from auth.oauth2 import get_current_user
 

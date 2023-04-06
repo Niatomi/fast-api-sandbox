@@ -10,7 +10,7 @@ from sqlalchemy.orm import joinedload
 
 from models import Post
 
-from exceptions import PostNotFoundException
+from posts.exceptions import PostNotFoundException
 
 from uuid import UUID
 

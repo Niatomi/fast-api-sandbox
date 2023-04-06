@@ -8,10 +8,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from repository.users import UserCrud
 
 from utils import *
-from exceptions import (
-    WrongCredentialsException,
-    UserAlreadyExistsException,
-)
+from auth.exceptions import WrongCredentialsException
+from users.exceptions import UserAlreadyExistsException
 from auth.oauth2 import (
     create_access_token
 )
