@@ -22,10 +22,11 @@ from database import get_async_session
 
 from repository.users import UserCrud
 from uuid import UUID
+from config import config
 
-from config import SECRET
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRET = config.secret
+ALGORITHM = config.algorithm
+ACCESS_TOKEN_EXPIRE_MINUTES = config.access_token_expiry
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='sign_in')
 
 def create_access_token(data: dict):

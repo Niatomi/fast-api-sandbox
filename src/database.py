@@ -1,4 +1,3 @@
-from config import Settings
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio import async_sessionmaker
@@ -10,18 +9,21 @@ import configparser
 import os
 
 
-config = configparser.ConfigParser()
+_config = configparser.ConfigParser()
 if os.path.dirname(__file__).find('.') != -1:
-    config.read("config.ini")
+    _config.read("config.ini")
 else:
-    config.read("../config.ini")
+    _config.read("../config.ini")
+
+
+from config import config
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-DATABASE_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}?async_fallback=true"
+DATABASE_URL = f"postgresql+asyncpg://{config.db_user}:{config.db_pass}@{config.db_host}:{config.db_port}/{config.db_name}?async_fallback=true"
 Base = declarative_base()
 
-engine = create_async_engine(DATABASE_URL, echo=config.getboolean('SQLAlchemy', 'ddl_show'), pool_size=5000, max_overflow=4000)
+engine = create_async_engine(DATABASE_URL, echo=_config.getboolean('SQLAlchemy', 'ddl_show'), pool_size=5000, max_overflow=4000)
 
 async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
