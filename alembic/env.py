@@ -1,7 +1,7 @@
 import sys
 import os
 sys.path.append(os.path.join(sys.path[0], 'src'))
-from src.config import DB_HOST, DB_PORT, DB_PASS, DB_USER, DB_NAME
+from src.config import Config
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
@@ -16,14 +16,17 @@ config = context.config
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
+
+_config = Config()
+
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 section = config.config_ini_section
-config.set_section_option(section, 'DB_USER', DB_USER)
-config.set_section_option(section, 'DB_PASS', DB_PASS)
-config.set_section_option(section, 'DB_HOST', DB_HOST)
-config.set_section_option(section, 'DB_PORT', DB_PORT)
-config.set_section_option(section, 'DB_NAME', DB_NAME)
+config.set_section_option(section, 'db_user', _config.db_user)
+config.set_section_option(section, 'db_pass', _config.db_pass)
+config.set_section_option(section, 'db_host', _config.db_host)
+config.set_section_option(section, 'db_port', _config.db_port)
+config.set_section_option(section, 'db_name', _config.db_name)
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
