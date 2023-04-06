@@ -14,6 +14,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from utils import hash
 
+from auth.oauth2 import get_current_user
+
 router = APIRouter(
     prefix="/user",
     tags=['user']
@@ -61,7 +63,8 @@ async def get_user(id: UUID, session: AsyncSession = Depends(get_async_session))
                     "description": "User is not found"
                 }  
               },
-              response_model=schemas.UserUpdated)
+              response_model=schemas.UserUpdated,
+              dependencies=[Depends(get_current_user)])
 async def update_user(id: UUID, updated_user: schemas.UserBase, session: AsyncSession = Depends(get_async_session)):
     await UserCrud.update_by_id(session=session, id=id, updated_user=updated_user)
     return schemas.UserUpdated()
@@ -77,7 +80,8 @@ async def update_user(id: UUID, updated_user: schemas.UserBase, session: AsyncSe
                     "description": "User is not found"
                 }  
               },
-              response_model=schemas.UserDeleted)
+              response_model=schemas.UserDeleted,
+              dependencies=[Depends(get_current_user)])
 async def delete_user(id: UUID, session: AsyncSession = Depends(get_async_session)):
     await UserCrud.delete_by_id(session=session, id=id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
