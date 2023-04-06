@@ -5,7 +5,10 @@ from exceptions import WrongCredentialsException
 from fastapi.security import OAuth2PasswordBearer
 
 from auth import schemas
-from jose import JWTError, jwt
+
+from jose import JWTError
+from jose import jwt
+
 from datetime import (
     datetime,
     timedelta    
@@ -17,7 +20,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from database import get_async_session
 
-from crud.users import UserCrud
+from repository.users import UserCrud
 from uuid import UUID
 
 from config import SECRET

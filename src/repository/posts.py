@@ -6,6 +6,8 @@ from sqlalchemy import select
 from sqlalchemy import update
 from sqlalchemy import delete
 
+from sqlalchemy.orm import joinedload
+
 from models import Post
 
 from exceptions import PostNotFoundException
@@ -25,14 +27,26 @@ class PostsCrud():
     
     @staticmethod
     async def get_all(session: AsyncSession):
-        statement = select(Post).order_by(Post.id)
+        statement = select(Post).order_by(Post.id).options(joinedload(Post.owner))
         result = await session.execute(statement)
-        return result.scalars().all()
-        
+        result = result.scalars().fetchall()
+        return result
+    
+    @staticmethod
+    async def get_pagination(session: AsyncSession, 
+                             items_size: int, 
+                             page: int):
+        page = page - 1
+        print(page*items_size + items_size)
+        statement = select(Post).order_by(Post.id).limit(items_size).offset(page*items_size).options(joinedload(Post.owner))
+        result = await session.execute(statement)
+        result = result.scalars().fetchall()
+        print(result)
+        return result
     
     @staticmethod
     async def get_by_id(session: AsyncSession, id: UUID):
-        statement = select(Post).where(Post.id == id)
+        statement = select(Post).where(Post.id == id).options(joinedload(Post.owner))
         result = await session.execute(statement)
         post = result.scalars().first()
         if post is None:
@@ -59,3 +73,4 @@ class PostsCrud():
         result = await session.execute(statement)
         await session.commit()
         return schemas.PostDeleted()
+    

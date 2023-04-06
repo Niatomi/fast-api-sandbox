@@ -9,7 +9,7 @@ from uuid import UUID
 from database import get_async_session
 
 from users import schemas
-from crud.users import UserCrud
+from repository.users import UserCrud
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from utils import hash

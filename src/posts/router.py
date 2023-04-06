@@ -5,7 +5,7 @@ from fastapi import Depends
 
 from typing import List
 
-from crud.posts import PostsCrud
+from repository.posts import PostsCrud
 
 from posts import schemas
 from posts.schemas import *
@@ -22,8 +22,6 @@ from posts.utils import check_user_own
 from models import User
 
 from uuid import uuid4
-
-from exceptions import NotAllowedException
 
 router = APIRouter(
     prefix="/posts",
@@ -46,9 +44,8 @@ router = APIRouter(
 async def create_post(post: schemas.PostBase, 
                       session: AsyncSession = Depends(get_async_session),
                       user: User = Depends(get_current_user)):
-    new_post = PostAll(**post.dict(), id=uuid4(), owner_id=user.id)
+    new_post = PostCreate(**post.dict(), id=uuid4(), owner_id=user.id)
     new_post.created_at = datetime.now()
-    
     await PostsCrud.create(session=session, post=new_post)
     return PostCreated()
 
@@ -59,9 +56,28 @@ async def create_post(post: schemas.PostBase,
                     "model": List[schemas.PostAll],
                     "description": "List of posts given to user"
                 }
-            })
+            },
+            response_model=List[schemas.PostAll])
 async def get_posts(session: AsyncSession = Depends(get_async_session)):
     result = await PostsCrud.get_all(session=session)
+    return result
+
+@router.get('/pages', 
+            status_code=status.HTTP_200_OK,
+            responses={
+                status.HTTP_200_OK: {
+                    "model": List[schemas.PostAll],
+                    "description": "List of posts given to user"
+                }
+            },
+            response_model=List[schemas.PostAll])
+async def get_posts(session: AsyncSession = Depends(get_async_session),
+                    items_size: int = 10,
+                    page: int = 1):
+    result = await PostsCrud.get_pagination(
+        session=session,
+        items_size=items_size,
+        page=page)
     return result
 
 @router.get('/{id}', 

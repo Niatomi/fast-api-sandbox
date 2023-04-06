@@ -1,7 +1,6 @@
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI
 from fastapi import status
 from fastapi import Request
-from fastapi import Response
 
 from fastapi.responses import JSONResponse
 

@@ -1,4 +1,4 @@
-from config import DB_HOST, DB_PORT, DB_PASS, DB_USER, DB_NAME
+from config import Settings
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio import async_sessionmaker

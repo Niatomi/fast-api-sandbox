@@ -5,7 +5,7 @@ from fastapi import status
 from database import get_async_session
 from auth.schemas import *
 from sqlalchemy.ext.asyncio import AsyncSession
-from crud.users import UserCrud
+from repository.users import UserCrud
 
 from utils import *
 from exceptions import (

@@ -1,6 +1,6 @@
 from fastapi import Depends
 from database import get_async_session
-from crud.posts import PostsCrud
+from repository.posts import PostsCrud
 from models import User
 from sqlalchemy.ext.asyncio import AsyncSession
 from exceptions import NotAllowedException
