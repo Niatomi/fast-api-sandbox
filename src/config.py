@@ -1,12 +1,17 @@
-from dotenv import load_dotenv
-import os
+from pydantic import BaseSettings
 
-load_dotenv()
+class Settings(BaseSettings):
+    db_host: str = 'localhost'
+    db_user: str = 'postgres'
+    db_pass: str = 'postgres'
+    db_port: int =  '5430'
 
-DB_HOST = os.environ.get('DB_HOST')
-DB_PORT = os.environ.get('DB_PORT')
-DB_PASS = os.environ.get('DB_PASS')
-DB_USER = os.environ.get('DB_USER')
-DB_NAME = os.environ.get('DB_NAME')
+    secret: str
+    algorithm: str = 'HS256'
+    access_token_expiry: int = 60
+    
+    class Config:
+        env_file = "../.env"
+        env_file_encoding = 'utf-8'
 
-SECRET = os.environ.get('DB_SECRET')
+settings = Settings()
