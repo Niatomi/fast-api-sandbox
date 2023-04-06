@@ -30,7 +30,8 @@ router = APIRouter(
         status.HTTP_401_UNAUTHORIZED: {
             "description": "User is not logged in"
         }
-    }
+    },
+    dependencies=[Depends(get_current_user)]
 )
 
 @router.post('/create', 
