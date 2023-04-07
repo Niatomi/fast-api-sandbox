@@ -92,7 +92,6 @@ class PostsCrud():
                 )
         await session.execute(statement)
         await session.commit()
-        await session.refresh(new_post)
         return schemas.PostUpdated()
     
     @staticmethod
