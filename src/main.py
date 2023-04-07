@@ -22,11 +22,12 @@ app.include_router(router=posts_router)
 app.include_router(router=users_router)
 app.include_router(router=votes_router)
 
+origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins="*",
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["POST", "GET", "DELETE"],
     allow_headers=["*"],
 )
 
