@@ -54,11 +54,11 @@ async def create_post(post: schemas.PostBase,
             status_code=status.HTTP_200_OK,
             responses={
                 status.HTTP_200_OK: {
-                    "model": List[schemas.PostAll],
+                    "model": List[schemas.PostOut],
                     "description": "List of posts given to user"
                 }
             },
-            response_model=List[schemas.PostAll])
+            response_model=List[schemas.PostOut])
 async def get_posts(session: AsyncSession = Depends(get_async_session)):
     result = await PostsCrud.get_all(session=session)
     return result
@@ -67,11 +67,11 @@ async def get_posts(session: AsyncSession = Depends(get_async_session)):
             status_code=status.HTTP_200_OK,
             responses={
                 status.HTTP_200_OK: {
-                    "model": List[schemas.PostAll],
+                    "model": List[schemas.PostOut],
                     "description": "List of posts given to user"
                 }
             },
-            response_model=List[schemas.PostAll])
+            response_model=List[schemas.PostOut])
 async def get_posts(session: AsyncSession = Depends(get_async_session),
                     items_size: int = 10,
                     page: int = 1):
@@ -85,14 +85,14 @@ async def get_posts(session: AsyncSession = Depends(get_async_session),
             status_code=status.HTTP_200_OK,
             responses={
                 status.HTTP_200_OK: {
-                    "model": schemas.PostAll,
+                    "model": schemas.PostOut,
                     "description": "User post is given to user"
                 },
                 status.HTTP_404_NOT_FOUND: {
                     "description": "User post is not found"
                 }
             },
-            response_model=schemas.PostAll)
+            response_model=schemas.PostOut)
 async def get_post(id: UUID, session: AsyncSession = Depends(get_async_session)):
     result = await PostsCrud.get_by_id(session=session, id=id)
     return result

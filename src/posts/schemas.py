@@ -3,7 +3,7 @@ from typing import Optional
 from uuid import UUID
 from datetime import datetime
 
-from users.schemas import UserGet
+from users import schemas as users_schemas
 
 class PostBase(BaseModel):
     title: str
@@ -19,12 +19,24 @@ class PostCreate(PostBase):
     
 class PostAll(PostBase):        
     id: UUID
+    votes: int
     created_at: datetime = datetime.now()
-    owner: Optional[UserGet]
+    owner: Optional[users_schemas.UserGet]
     
     class Config:
         orm_mode = True
         
+class Post(PostBase):
+    id: UUID
+    created_at: datetime = datetime.now()
+    owner_id: UUID
+    
+class PostOut(BaseModel):
+    Post: Post
+    User: users_schemas.UserGet
+    votes: int
+    
+    
 class PostCreated(BaseModel):
     message: str = "POST_IS_CREATED"
     
