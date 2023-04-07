@@ -12,7 +12,10 @@ from votes.router import router as votes_router
 
 from auth.oauth2 import get_current_user
 
-app = FastAPI()
+app = FastAPI(
+    title='Nia\'s social network service',
+    version='1.0'
+)
 
 app.include_router(router=auth_router)
 app.include_router(router=posts_router)
