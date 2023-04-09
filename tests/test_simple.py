@@ -1,15 +1,9 @@
 import pytest
-from src.main import app
+
+from src.__main__ import func
 
 
-async def test_inc():
-    assert app.add(3) == 4
-
-
-def func_exc():
-    raise Exception
-
-
-def test_func_exc():
-    with pytest.raises(Exception):
-        func_exc()
+def test_inc():
+    assert func(3) == 4
+    assert func(5) == 6
+    assert func(7) == 8
