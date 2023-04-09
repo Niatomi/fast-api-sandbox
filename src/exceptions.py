@@ -4,14 +4,14 @@ from fastapi import Request
 
 from fastapi.responses import JSONResponse
 
-from posts import schemas as posts_schemas
-from users import schemas as user_schemas
-from auth.schemas import WrongCredentials
+from .posts import schemas as posts_schemas
+from .users import schemas as user_schemas
+from .auth.schemas import WrongCredentials
 
-from votes import exceptions as votes_exceptions
-from users import exceptions as user_exceptions
-from posts import exceptions as posts_exceptions
-from auth import exceptions as auth_exceptions
+from .votes import exceptions as votes_exceptions
+from .users import exceptions as user_exceptions
+from .posts import exceptions as posts_exceptions
+from .auth import exceptions as auth_exceptions
 
 def include_app(app: FastAPI):
     app.add_exception_handler(posts_exceptions.PostNotFoundException, posts_exceptions.post_not_found_exception_handler)

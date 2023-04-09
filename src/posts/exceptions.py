@@ -1,4 +1,4 @@
-from posts import schemas
+from . import schemas
 from fastapi import status
 from fastapi.responses import JSONResponse
 from fastapi import Request

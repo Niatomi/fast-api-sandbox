@@ -6,15 +6,15 @@ from fastapi import Response
 from typing import List
 from uuid import UUID
 
-from database import get_async_session
+from ..database import get_async_session
 
-from users import schemas
-from repository.users import UserCrud
+from . import schemas
+from ..repository.users import UserCrud
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from utils import hash
+from ..utils import hash
 
-from auth.oauth2 import get_current_user
+from ..auth.oauth2 import get_current_user
 
 router = APIRouter(
     prefix="/user",

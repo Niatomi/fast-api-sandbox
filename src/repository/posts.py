@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from posts import schemas
+from ..posts import schemas
 
 from sqlalchemy import select
 from sqlalchemy import update
@@ -10,11 +10,11 @@ from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 from sqlalchemy.orm import load_only
 
-from models import Post
-from models import Votes
-from models import User
+from ..models import (Post, 
+                      Votes, 
+                      User)
 
-from posts.exceptions import PostNotFoundException
+from ..posts.exceptions import PostNotFoundException
 
 from sqlalchemy import inspect
 

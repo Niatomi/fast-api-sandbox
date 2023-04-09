@@ -8,15 +8,13 @@ import configparser
 
 import os
 
+print(__file__)
 
 _config = configparser.ConfigParser()
-if os.path.dirname(__file__).find('.') != -1:
-    _config.read("config.ini")
-else:
-    _config.read("../config.ini")
+_config.read("config.ini")
 
 
-from config import config
+from .config import config
 
 from sqlalchemy.ext.asyncio import AsyncSession
 

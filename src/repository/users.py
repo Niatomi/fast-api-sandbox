@@ -6,16 +6,16 @@ from sqlalchemy import update
 
 from pydantic import EmailStr
 
-from users import schemas
+from ..users import schemas
 
-from utils import hash
+from ..utils import hash
 
-from users.exceptions import (
+from ..users.exceptions import (
     UserNotFoundException, 
     UserAlreadyExistsException
 )
 
-from models import User
+from ..models import User
 
 from uuid import UUID
 

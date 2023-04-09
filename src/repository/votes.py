@@ -1,11 +1,12 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from database import get_async_session
-from votes import schemas
+
+from ..database import get_async_session
+from ..votes import schemas
 
 from sqlalchemy import select
 from sqlalchemy import delete
 
-from models import Votes
+from ..models import Votes
 
 class VoteCrud():
     

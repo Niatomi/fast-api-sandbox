@@ -1,6 +1,6 @@
 from fastapi import status
 from fastapi.responses import JSONResponse
-from users import schemas as user_schemas
+from . import schemas as user_schemas
 from fastapi import Request
 
 class UserNotFoundException(Exception):

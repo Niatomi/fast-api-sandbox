@@ -1,4 +1,4 @@
-from auth.schemas import WrongCredentials
+from .schemas import WrongCredentials
 from fastapi import status
 from fastapi.responses import JSONResponse
 from fastapi import Request

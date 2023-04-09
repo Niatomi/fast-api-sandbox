@@ -1,10 +1,10 @@
 from fastapi import Depends
 from fastapi import status
-from auth.exceptions import WrongCredentialsException
+from .exceptions import WrongCredentialsException
 
 from fastapi.security import OAuth2PasswordBearer
 
-from auth import schemas
+from . import schemas
 
 from jose import JWTError
 from jose import jwt
@@ -14,15 +14,15 @@ from datetime import (
     timedelta    
 )
 
-from models import User
+# from ..models import User
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database import get_async_session
+from ..database import get_async_session
 
-from repository.users import UserCrud
+from ..repository.users import UserCrud
 from uuid import UUID
-from config import config
+from ..config import config
 
 SECRET = config.secret
 ALGORITHM = config.algorithm

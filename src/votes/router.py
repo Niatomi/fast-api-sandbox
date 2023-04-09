@@ -2,20 +2,20 @@ from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import Response
 from fastapi import status
-from auth.oauth2 import get_current_user
+from ..auth.oauth2 import get_current_user
 
-from votes import schemas
+from . import schemas
 
-from models import User
+from ..models import User
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database import get_async_session
+from ..database import get_async_session
 
-from repository.votes import VoteCrud
-from repository.posts import PostsCrud 
-from votes.exceptions import VoteException
-from posts.exceptions import PostNotFoundException
+from ..repository.votes import VoteCrud
+from ..repository.posts import PostsCrud 
+from .exceptions import VoteException
+from ..posts.exceptions import PostNotFoundException
 
 router = APIRouter(
     prefix='/votes',

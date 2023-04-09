@@ -2,18 +2,18 @@ from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import status
 
-from database import get_async_session
-from auth.schemas import *
+from ..database import get_async_session
+from .schemas import *
 from sqlalchemy.ext.asyncio import AsyncSession
-from repository.users import UserCrud
+from ..repository.users import UserCrud
 
-from utils import *
-from auth.exceptions import WrongCredentialsException
-from users.exceptions import UserAlreadyExistsException
-from auth.oauth2 import (
+from ..utils import *
+from .exceptions import WrongCredentialsException
+from ..users.exceptions import UserAlreadyExistsException
+from .oauth2 import (
     create_access_token
 )
-from users.schemas import (
+from ..users.schemas import (
     UserCreate,
     UserAlreadyExists
 )

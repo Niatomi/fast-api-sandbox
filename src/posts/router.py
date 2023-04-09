@@ -5,21 +5,20 @@ from fastapi import Depends
 
 from typing import List
 
-from repository.posts import PostsCrud
+from ..repository.posts import PostsCrud
 
-from posts import schemas
-from posts.schemas import *
+from . import schemas
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 
-from database import get_async_session
+from ..database import get_async_session
 
-from auth.oauth2 import get_current_user
+from ..auth.oauth2 import get_current_user
 
-from posts.utils import check_user_own
+from .utils import check_user_own
 
-from models import User
+from ..models import User
 
 from uuid import uuid4
 
@@ -38,17 +37,17 @@ router = APIRouter(
              status_code=status.HTTP_201_CREATED,
              responses={
                  status.HTTP_201_CREATED: {
-                     "model": PostCreated,
+                     "model": schemas.PostCreated,
                      "description": "User post is created"
                  }
              })
 async def create_post(post: schemas.PostBase, 
                       session: AsyncSession = Depends(get_async_session),
                       user: User = Depends(get_current_user)):
-    new_post = PostCreate(**post.dict(), id=uuid4(), owner_id=user.id)
+    new_post = schemas.PostCreate(**post.dict(), id=uuid4(), owner_id=user.id)
     new_post.created_at = datetime.now()
     await PostsCrud.create(session=session, post=new_post)
-    return PostCreated()
+    return schemas.PostCreated()
 
 @router.get('/', 
             status_code=status.HTTP_200_OK,
@@ -101,15 +100,15 @@ async def get_post(id: UUID, session: AsyncSession = Depends(get_async_session))
               status_code=status.HTTP_202_ACCEPTED,
               responses={
                 status.HTTP_202_ACCEPTED: {
-                    "model": PostUpdated,
+                    "model": schemas.PostUpdated,
                     "description": "User post is updated"
                 },
                 status.HTTP_404_NOT_FOUND: {
-                    "model": PostNotFound,
+                    "model": schemas.PostNotFound,
                     "description": "User post is not found"
                 },
                 status.HTTP_405_METHOD_NOT_ALLOWED: {
-                    "model": PostChangeNotAllowed,
+                    "model": schemas.PostChangeNotAllowed,
                     "description": "User doesn't have an access for current post"
                 }
               },
@@ -126,11 +125,11 @@ async def update_post(id: UUID, post: schemas.PostBase,
                        "description": "User deleted"
                    },
                    status.HTTP_404_NOT_FOUND: {
-                       "model": PostNotFound,
+                       "model": schemas.PostNotFound,
                        "description": "User post is not found"
                     },
                     status.HTTP_405_METHOD_NOT_ALLOWED: {
-                       "model": PostChangeNotAllowed,
+                       "model": schemas.PostChangeNotAllowed,
                        "description": "User doesn't have an access for current post"
                     }
                },

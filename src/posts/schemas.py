@@ -3,7 +3,7 @@ from typing import Optional
 from uuid import UUID
 from datetime import datetime
 
-from users import schemas as users_schemas
+from ..users import schemas as users_schemas
 
 class PostBase(BaseModel):
     title: str

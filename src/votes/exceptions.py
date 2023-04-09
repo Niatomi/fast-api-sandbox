@@ -1,6 +1,8 @@
 from fastapi import Request
 from fastapi import status
-from votes.schemas import VoteExceptionResponse
+
+from .schemas import VoteExceptionResponse
+
 from fastapi.responses import JSONResponse
 
 class VoteException(Exception):
