@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import status
+from fastapi import Form
 
 from ..database import get_async_session
 from .schemas import *
@@ -23,6 +24,13 @@ router = APIRouter(
     tags=["authentication"]
 )
 
+from pydantic.dataclasses import dataclass
+
+
+@dataclass
+class AdditionalUserDataForm:
+    email: str = Form(None)
+
 @router.post('/sign_in',
              responses={
                  status.HTTP_400_BAD_REQUEST: {
@@ -35,7 +43,10 @@ router = APIRouter(
                  }
              },
              response_model=UserToken)
-async def sign_in(user_credentials: OAuth2PasswordRequestForm = Depends(), session: AsyncSession = Depends(get_async_session)):
+async def sign_in(user_credentials: OAuth2PasswordRequestForm = Depends(), 
+                  session: AsyncSession = Depends(get_async_session), 
+                  additional_info: AdditionalUserDataForm = Depends()):
+    print(additional_info.email)
     user_from_db = await UserCrud.get_by_email(session=session, email=user_credentials.username)
     if not verify(user_credentials.password, user_from_db.password):
         raise WrongCredentialsException

@@ -8,8 +8,6 @@ import configparser
 
 import os
 
-print(__file__)
-
 _config = configparser.ConfigParser()
 _config.read("config.ini")
 
@@ -19,6 +17,8 @@ from .config import config
 from sqlalchemy.ext.asyncio import AsyncSession
 
 DATABASE_URL = f"postgresql+asyncpg://{config.db_user}:{config.db_pass}@{config.db_host}:{config.db_port}/{config.db_name}"
+
+print(DATABASE_URL)
 
 engine = create_async_engine(DATABASE_URL, echo=_config.getboolean('SQLAlchemy', 'ddl_show'))
 

@@ -1,4 +1,6 @@
 from pydantic import BaseSettings
+from pydantic import Pyda
+
 
 class Config(BaseSettings):
     db_host: str = 'localhost'

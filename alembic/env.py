@@ -1,6 +1,3 @@
-import sys
-import os
-sys.path.append(os.path.join(sys.path[0], 'src'))
 from src.config import Config
 from logging.config import fileConfig
 
@@ -26,7 +23,7 @@ config.set_section_option(section, 'db_user', _config.db_user)
 config.set_section_option(section, 'db_pass', _config.db_pass)
 config.set_section_option(section, 'db_host', _config.db_host)
 config.set_section_option(section, 'db_port', _config.db_port)
-config.set_section_option(section, 'db_name', _config.db_name)
+config.set_section_option(section, 'db_name', _config.db_name + '_test')
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
